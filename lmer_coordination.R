@@ -10,6 +10,7 @@ library(lme4)
 #library(sjPlot) # table functions
 #library(sjmisc) # sample data
 require(lattice) # xy plots
+library(car)
 
 data_root = getwd()
 
@@ -60,8 +61,97 @@ step_length_TWO_all = vision$step_length_response_TWO* 1000
 fy_all = vision$fy_band_end_ONE
 subject_all = vision$subject
 direction_all = vision$direction
+library(lme4)
+library(lmerTest)
+library(emmeans)
+require(lattice)
+emm_options(pbkrtest.limit = 10000)
+number_of_simulations = 100;
+
+# Comprehensive LMER (includes all directions)
+# CoP-Step
+cop_step_model <- lmer(step_placement_x_inverted_mm_all ~ cop_from_com_x_integrated_inverted_mm_all*direction_all  +  (1 + cop_from_com_x_integrated_inverted_mm_all|subject_all), REML=TRUE)
+anova_cop_step_model <- anova(cop_step_model)
+confint_cop_step_model <- confint(cop_step_model)
 
 
+cop_model = lmer(cop_from_com_x_integrated_inverted_mm_all ~ direction_all  +  (1 |subject_all), REML=TRUE)
+confint_cop_model = confint(cop_model)
+
+cop_model_towards = lmer(cop_from_com_x_integrated_inverted_mm_towards  ~  (1 |subject_towards), REML=TRUE)
+confint_cop_model_towards = confint(cop_model_towards)
+cop_model_away = lmer(cop_from_com_x_integrated_inverted_mm_away ~  (1 |subject_away), REML=TRUE)
+confint_cop_model_away = confint(cop_model_away)
+cop_model_control = lmer(cop_from_com_x_integrated_inverted_mm_control ~  (1 |subject_control), REML=TRUE)
+confint_cop_model_control = confint(cop_model_control)
+
+step_model_towards = lmer(step_placement_x_inverted_mm_towards  ~  (1 |subject_towards), REML=TRUE)
+confint_step_model_towards = confint(step_model_towards)
+step_model_away = lmer(step_placement_x_inverted_mm_away ~  (1 |subject_away), REML=TRUE)
+confint_step_model_away = confint(step_model_away)
+step_model_control = lmer(step_placement_x_inverted_mm_control ~  (1 |subject_control), REML=TRUE)
+confint_step_model_control = confint(step_model_control)
+
+
+
+step_model = lmer(step_placement_x_inverted_mm_all ~ direction_all  +  (1 |subject_all), REML=TRUE)
+confint_step_model = confint(step_model)
+
+
+
+dataEllipse(cop_from_com_x_integrated_inverted_mm_towards, step_placement_x_inverted_mm_towards, levels=c(0.95))
+
+#confint_cop_step_model <- confint(cop_step_model)
+
+# COP-Push
+cop_push_model <- lmer(trigger_leg_ankle_dorsiflexion_integrated_deg_all ~  cop_from_com_x_integrated_inverted_mm_all*direction_all  + (1+cop_from_com_x_integrated_inverted_mm_all|subject_all), REML=TRUE)
+anova_cop_push_model <- anova(cop_push_model)
+#confint_cop_push_model <- confint(cop_push_model)
+
+# Step-Push
+step_push_model <- lmer(trigger_leg_ankle_dorsiflexion_integrated_deg_all ~ step_placement_x_inverted_mm_all*direction_all  + (1+step_placement_x_inverted_mm_all|subject_all), REML=TRUE)
+anova_step_push_model <- anova(step_push_model)
+#confint_step_push_model <- confint(step_push_model)
+
+
+# iPO - step length 1
+push_length1_model <- lmer(step_length_ONE_all ~ trigger_leg_ankle_dorsiflexion_integrated_deg_all*direction_all + (1+trigger_leg_ankle_dorsiflexion_integrated_deg_all|subject_all), REML=TRUE)
+anova_push_length1_model <- anova(push_length1_model)
+#confint_push_length1_model <- confint(push_length1_model)
+
+# iPO - step length 2
+
+push_length2_model <- lmer(step_length_TWO_all ~ trigger_leg_ankle_dorsiflexion_integrated_deg_all*direction_all + (1+trigger_leg_ankle_dorsiflexion_integrated_deg_all|subject_all), REML=TRUE)
+anova_push_length2_model <- anova(push_length2_model)
+#confint_push_length2_model <- confint(push_length2_model)
+
+
+# iPO- step time 1
+
+push_time1_model <- lmer(step_time_ONE_all ~ trigger_leg_ankle_dorsiflexion_integrated_deg_all*direction_all + (1+trigger_leg_ankle_dorsiflexion_integrated_deg_all|subject_all), REML=TRUE)
+anova_push_time1_model <- anova(push_time1_model)
+#confint_push_time1_model <- confint(push_time1_model)
+
+
+# iPO - step time 2
+
+push_time2_model <- lmer(step_time_TWO_all ~ trigger_leg_ankle_dorsiflexion_integrated_deg_all*direction_all + (1+trigger_leg_ankle_dorsiflexion_integrated_deg_all|subject_all), REML=TRUE)
+anova_push_time2_model <- anova(push_time2_model)
+confint_push_time2_model <- confint(push_time2_model)
+
+# iPO - fy
+
+push_fy_model <- lmer(fy_all ~ trigger_leg_ankle_dorsiflexion_integrated_deg_all*direction_all + (1+trigger_leg_ankle_dorsiflexion_integrated_deg_all|subject_all), REML=TRUE)
+anova_push_fy_model <- anova(push_fy_model)
+confint_push_fy_model <- confint(push_fy_model)
+
+
+
+
+
+
+
+# vvv LMER By Direction vvv
 # COP-STEP
 # towards
 cop_step_towards_model_exp = lmer(step_placement_x_inverted_mm_towards ~ cop_from_com_x_integrated_inverted_mm_towards + (1|subject_towards), REML=FALSE)
