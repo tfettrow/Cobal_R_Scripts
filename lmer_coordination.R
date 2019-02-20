@@ -68,6 +68,8 @@ require(lattice)
 emm_options(pbkrtest.limit = 10000)
 number_of_simulations = 100;
 
+
+
 # Comprehensive LMER (includes all directions)
 # CoP-Step
 cop_step_model <- lmer(step_placement_x_inverted_mm_all ~ cop_from_com_x_integrated_inverted_mm_all*direction_all  +  (1 + cop_from_com_x_integrated_inverted_mm_all|subject_all), REML=TRUE)
@@ -78,19 +80,19 @@ confint_cop_step_model <- confint(cop_step_model)
 cop_model = lmer(cop_from_com_x_integrated_inverted_mm_all ~ direction_all  +  (1 |subject_all), REML=TRUE)
 confint_cop_model = confint(cop_model)
 
-cop_model_towards = lmer(cop_from_com_x_integrated_inverted_mm_towards  ~  (1 |subject_towards), REML=TRUE)
-confint_cop_model_towards = confint(cop_model_towards)
-cop_model_away = lmer(cop_from_com_x_integrated_inverted_mm_away ~  (1 |subject_away), REML=TRUE)
-confint_cop_model_away = confint(cop_model_away)
-cop_model_control = lmer(cop_from_com_x_integrated_inverted_mm_control ~  (1 |subject_control), REML=TRUE)
-confint_cop_model_control = confint(cop_model_control)
+# cop_model_towards = lmer(cop_from_com_x_integrated_inverted_mm_towards  ~  (1 |subject_towards), REML=TRUE)
+# confint_cop_model_towards = confint(cop_model_towards)
+# cop_model_away = lmer(cop_from_com_x_integrated_inverted_mm_away ~  (1 |subject_away), REML=TRUE)
+# confint_cop_model_away = confint(cop_model_away)
+# cop_model_control = lmer(cop_from_com_x_integrated_inverted_mm_control ~  (1 |subject_control), REML=TRUE)
+# confint_cop_model_control = confint(cop_model_control)
 
-step_model_towards = lmer(step_placement_x_inverted_mm_towards  ~  (1 |subject_towards), REML=TRUE)
-confint_step_model_towards = confint(step_model_towards)
-step_model_away = lmer(step_placement_x_inverted_mm_away ~  (1 |subject_away), REML=TRUE)
-confint_step_model_away = confint(step_model_away)
-step_model_control = lmer(step_placement_x_inverted_mm_control ~  (1 |subject_control), REML=TRUE)
-confint_step_model_control = confint(step_model_control)
+# step_model_towards = lmer(step_placement_x_inverted_mm_towards  ~  (1 |subject_towards), REML=TRUE)
+# confint_step_model_towards = confint(step_model_towards)
+# step_model_away = lmer(step_placement_x_inverted_mm_away ~  (1 |subject_away), REML=TRUE)
+# confint_step_model_away = confint(step_model_away)
+# step_model_control = lmer(step_placement_x_inverted_mm_control ~  (1 |subject_control), REML=TRUE)
+# confint_step_model_control = confint(step_model_control)
 
 
 
@@ -119,6 +121,7 @@ push_length1_model <- lmer(step_length_ONE_all ~ trigger_leg_ankle_dorsiflexion_
 anova_push_length1_model <- anova(push_length1_model)
 #confint_push_length1_model <- confint(push_length1_model)
 
+
 # iPO - step length 2
 
 push_length2_model <- lmer(step_length_TWO_all ~ trigger_leg_ankle_dorsiflexion_integrated_deg_all*direction_all + (1+trigger_leg_ankle_dorsiflexion_integrated_deg_all|subject_all), REML=TRUE)
@@ -146,9 +149,73 @@ anova_push_fy_model <- anova(push_fy_model)
 confint_push_fy_model <- confint(push_fy_model)
 
 
+# # # Ankle Gait parameters # # #
+
+# cop - step length 1
+cop_length1_model <- lmer(step_length_ONE_all ~ cop_from_com_x_integrated_inverted_mm_all*direction_all + (1+cop_from_com_x_integrated_inverted_mm_all|subject_all), REML=TRUE)
+anova_cop_length1_model <- anova(cop_length1_model)
+#confint_push_length1_model <- confint(push_length1_model)
 
 
+# cop - step length 2
 
+cop_length2_model <- lmer(step_length_TWO_all ~ cop_from_com_x_integrated_inverted_mm_all*direction_all + (1+cop_from_com_x_integrated_inverted_mm_all|subject_all), REML=TRUE)
+anova_cop_length2_model <- anova(cop_length2_model)
+#confint_push_length2_model <- confint(push_length2_model)
+
+
+# cop - step time 1
+
+cop_time1_model <- lmer(step_time_ONE_all ~ cop_from_com_x_integrated_inverted_mm_all*direction_all + (1+cop_from_com_x_integrated_inverted_mm_all|subject_all), REML=TRUE)
+anova_cop_time1_model <- anova(cop_time1_model)
+#confint_push_time1_model <- confint(push_time1_model)
+
+
+# cop - step time 2
+
+cop_time2_model <- lmer(step_time_TWO_all ~ cop_from_com_x_integrated_inverted_mm_all*direction_all + (1+cop_from_com_x_integrated_inverted_mm_all|subject_all), REML=TRUE)
+anova_cop_time2_model <- anova(cop_time2_model)
+#confint_cop_time2_model <- confint(cop_time2_model)
+
+# cop - fy
+
+cop_fy_model <- lmer(fy_all ~ cop_from_com_x_integrated_inverted_mm_all*direction_all + (1+cop_from_com_x_integrated_inverted_mm_all|subject_all), REML=TRUE)
+anova_cop_fy_model <- anova(cop_fy_model)
+#confint_cop_fy_model <- confint(cop_fy_model)
+
+# # # Step Gait parameters # # #
+
+# step - step length 1
+step_length1_model <- lmer(step_length_ONE_all ~ step_placement_x_inverted_mm_all*direction_all + (1+step_placement_x_inverted_mm_all|subject_all), REML=TRUE)
+anova_step_length1_model <- anova(step_length1_model)
+#confint_push_length1_model <- confint(push_length1_model)
+
+
+# step - step length 2
+
+step_length2_model <- lmer(step_length_TWO_all ~ step_placement_x_inverted_mm_all*direction_all + (1+step_placement_x_inverted_mm_all|subject_all), REML=TRUE)
+anova_step_length2_model <- anova(step_length2_model)
+#confint_push_length2_model <- confint(push_length2_model)
+
+
+# step - step time 1
+
+step_time1_model <- lmer(step_time_ONE_all ~ step_placement_x_inverted_mm_all*direction_all + (1+step_placement_x_inverted_mm_all|subject_all), REML=TRUE)
+anova_step_time1_model <- anova(step_time1_model)
+#confint_push_time1_model <- confint(push_time1_model)
+
+
+# step - step time 2
+
+step_time2_model <- lmer(step_time_TWO_all ~ step_placement_x_inverted_mm_all*direction_all + (1+step_placement_x_inverted_mm_all|subject_all), REML=TRUE)
+anova_step_time2_model <- anova(step_time2_model)
+#confint_step_time2_model <- confint(step_time2_model)
+
+# Step - fy
+
+step_fy_model <- lmer(fy_all ~ step_placement_x_inverted_mm_all*direction_all + (1+step_placement_x_inverted_mm_all|subject_all), REML=TRUE)
+anova_step_fy_model <- anova(step_fy_model)
+#confint_step_fy_model <- confint(step_fy_model)
 
 
 # vvv LMER By Direction vvv
@@ -445,4 +512,92 @@ iPO_step_control_model_exp = lmer(step_placement_x_inverted_mm_control ~ trigger
 iPO_cop_towards_model_exp = lmer(cop_from_com_x_integrated_inverted_mm_towards  ~ trigger_leg_ankle_dorsiflexion_integrated_deg_towards + (1|subject_towards), REML=FALSE)
 iPO_cop_control_model_exp = lmer(cop_from_com_x_integrated_inverted_mm_control  ~ trigger_leg_ankle_dorsiflexion_integrated_deg_control + (1|subject_control), REML=FALSE)
 iPO_cop_away_model_exp = lmer(cop_from_com_x_integrated_inverted_mm_away  ~ trigger_leg_ankle_dorsiflexion_integrated_deg_away + (1|subject_away), REML=FALSE)
+
+
+
+
+# # # # # # COM Analysis # # # # # 
+# all mechs | com
+# towards
+
+com_null = lmer(vision$com_x_inverted_pushoff_end_TWO[vision_indices_towards] ~ (1|vision$subject[vision_indices_towards]), REML = FALSE)
+
+com_1mech_towards = lmer(vision$com_x_inverted_pushoff_end_TWO[vision_indices_towards] ~ vision$cop_from_com_x_integrated_inverted_ONE[vision_indices_towards] + (1 + vision$cop_from_com_x_integrated_inverted_ONE[vision_indices_towards]|vision$subject[vision_indices_towards]), REML = FALSE)
+
+com_2mech_towards = lmer(vision$com_x_inverted_pushoff_end_TWO[vision_indices_towards] ~ vision$cop_from_com_x_integrated_inverted_ONE[vision_indices_towards] +  vision$step_placement_x_inverted_ONE[vision_indices_towards] + (1 + vision$step_placement_x_inverted_ONE[vision_indices_towards] + vision$cop_from_com_x_integrated_inverted_ONE[vision_indices_towards]|vision$subject[vision_indices_towards]), REML = FALSE)
+
+com_3mech_towards = lmer(vision$com_x_inverted_pushoff_end_TWO[vision_indices_towards] ~ vision$cop_from_com_x_integrated_inverted_ONE[vision_indices_towards] + vision$step_placement_x_inverted_ONE[vision_indices_towards] + vision$trigger_leg_ankle_dorsiflexion_integrated_TWO[vision_indices_towards]
+      + (1+vision$cop_from_com_x_integrated_inverted_ONE[vision_indices_towards]+ vision$step_placement_x_inverted_ONE[vision_indices_towards] + vision$trigger_leg_ankle_dorsiflexion_integrated_TWO[vision_indices_towards]|vision$subject[vision_indices_towards]), REML = FALSE)
+
+com_3mech_towards = lmer(vision$com_x_inverted_pushoff_end_TWO[vision_indices_towards] ~ vision$cop_from_com_x_integrated_inverted_ONE[vision_indices_towards] + vision$step_placement_x_inverted_ONE[vision_indices_towards] + vision$trigger_leg_ankle_dorsiflexion_integrated_TWO[vision_indices_towards]
+              + (1|vision$subject[vision_indices_towards]), REML = FALSE)
+
+# towards
+
+com_vel_cop_towards_null = lmer(com_x_vel_inverted_pushoff_end_mm_towards ~ (1+cop_from_com_x_integrated_inverted_mm_towards|subject_towards), REML=FALSE)
+com_vel_cop_towards_exp = lmer(com_x_vel_inverted_pushoff_end_mm_towards ~ cop_from_com_x_integrated_inverted_mm_towards + (1+cop_from_com_x_integrated_inverted_mm_towards|subject_towards), REML=FALSE)
+[summary(com_vel_cop_towards_exp)
+  anova(com_vel_cop_towards_exp)
+  confint(com_vel_cop_towards_exp)
+  
+  com_vel_step_towards_null = lmer(com_x_vel_inverted_pushoff_end_mm_towards ~ (1+step_placement_x_inverted_mm_towards|subject_towards), REML=FALSE)
+  com_vel_step_towards_exp = lmer(com_x_vel_inverted_pushoff_end_mm_towards ~ step_placement_x_inverted_mm_towards + (1+step_placement_x_inverted_mm_towards|subject_towards), REML=FALSE)
+  summary(com_vel_step_towards_exp)
+  anova(com_vel_step_towards_exp)
+  confint(com_vel_step_towards_exp)
+  
+  com_vel_ipo_towards_exp = lmer(com_x_vel_inverted_pushoff_end_mm_towards ~ trigger_leg_ankle_dorsiflexion_integrated_deg_towards + (1+trigger_leg_ankle_dorsiflexion_integrated_deg_towards|subject_towards), REML=FALSE)
+  summary(com_vel_ipo_towards_exp)
+  anova(com_vel_ipo_towards_exp)
+  confint(com_vel_ipo_towards_exp)
+  
+  # away
+  
+  com_vel_cop_away_null = lmer(com_x_vel_inverted_pushoff_end_mm_away ~ (1+cop_from_com_x_integrated_inverted_mm_away|subject_away), REML=FALSE)
+  com_vel_cop_away_exp = lmer(com_x_vel_inverted_pushoff_end_mm_away ~ cop_from_com_x_integrated_inverted_mm_away + (1+cop_from_com_x_integrated_inverted_mm_away|subject_away), REML=FALSE)
+  summary(com_vel_cop_away_exp)
+  anova(com_vel_cop_away_exp)
+  confint(com_vel_cop_away_exp)
+  
+  com_vel_step_away_null = lmer(com_x_vel_inverted_pushoff_end_mm_away ~ (1+step_placement_x_inverted_mm_away|subject_away), REML=FALSE)
+  com_vel_step_away_exp = lmer(com_x_vel_inverted_pushoff_end_mm_away ~ step_placement_x_inverted_mm_away + (1+step_placement_x_inverted_mm_away|subject_away), REML=FALSE)
+  summary(com_vel_step_away_exp)
+  anova(com_vel_step_away_exp)
+  confint(com_vel_step_away_exp)
+  
+  com_vel_ipo_away_exp = lmer(com_x_vel_inverted_pushoff_end_mm_away ~ trigger_leg_ankle_dorsiflexion_integrated_deg_away + (1+trigger_leg_ankle_dorsiflexion_integrated_deg_away|subject_away), REML=FALSE)
+  summary(com_vel_ipo_away_exp)
+  anova(com_vel_ipo_away_exp)
+  confint(com_vel_ipo_away_exp)
+  
+  # control
+  com_vel_cop_control_null = lmer(com_x_vel_inverted_pushoff_end_mm_control ~ (1+cop_from_com_x_integrated_inverted_mm_control|subject_control), REML=FALSE)
+  com_vel_cop_control_exp = lmer(com_x_vel_inverted_pushoff_end_mm_control ~ cop_from_com_x_integrated_inverted_mm_control + (1+cop_from_com_x_integrated_inverted_mm_control|subject_control), REML=FALSE)
+  summary(com_vel_cop_control_exp)
+  anova(com_vel_cop_control_exp)
+  confint(com_vel_cop_control_exp)
+  
+  com_vel_step_control_null = lmer(com_x_vel_inverted_pushoff_end_mm_control ~ (1+step_placement_x_inverted_mm_control|subject_control), REML=FALSE)
+  com_vel_step_control_exp = lmer(com_x_vel_inverted_pushoff_end_mm_control ~ step_placement_x_inverted_mm_control + (1+step_placement_x_inverted_mm_control|subject_control), REML=FALSE)
+  summary(com_vel_step_control_exp)
+  anova(com_vel_step_control_exp)
+  confint(com_vel_step_control_exp)
+  
+  com_vel_ipo_control_exp = lmer(com_x_vel_inverted_pushoff_end_mm_control ~ trigger_leg_ankle_dorsiflexion_integrated_deg_control + (1+trigger_leg_ankle_dorsiflexion_integrated_deg_control|subject_control), REML=FALSE)
+  summary(com_vel_ipo_control_exp)
+  anova(com_vel_ipo_control_exp)
+  confint(com_vel_ipo_control_exp)
+  
+  
+
+#anova(com_null, com_1mech_towards, com_2mech_towards, com_3mech_towards)
+
+com_mech_towards = lmer(com_x_inverted_pushoff_end_mm_towards ~ cop_from_com_x_integrated_inverted_mm_towards + step_placement_x_inverted_mm_towards + trigger_leg_ankle_dorsiflexion_integrated_deg_towards 
+                        + (1|subject_towards), REML = FALSE)
+
+summary(com_mech_towards)
+anova(com_mech_towards)
+confint(com_mech_towards)
+
+
 
