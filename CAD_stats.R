@@ -10,7 +10,7 @@ indices_fast = which(dat$cadence == '110BPM'  & dat$direction != 'STIM_NONE')
 indices_control = which(dat$direction == 'STIM_NONE')
 
 # load data
-dat = read.csv("G:\Team Drives\CoBaL\Cadence\results_pilot.csv", header = TRUE)
+dat = read.csv("G:\Team Drives\CoBaL\Cadence\results.csv", header = TRUE)
 
 step_placement_x_inverted_mm_fast <- dat$step_placement_x_sym_ONE[indices_fast] * 1000;
 stimulus_response_x_inverted_mm_fast <- dat$stimulus_response_x_sym_ONE[indices_fast] * 1000;
@@ -21,7 +21,6 @@ step_placement_x_inverted_mm_slow <- dat$step_placement_x_sym_ONE[indices_slow] 
 stimulus_response_x_inverted_mm_slow <- dat$stimulus_response_x_sym_ONE[indices_slow] * 1000;
 cop_from_com_x_integrated_inverted_mm_slow <- dat$cop_from_com_x_integrated_sym_ONE[indices_slow] * 1000;
 trigger_leg_ankle_dorsiflexion_integrated_slow <- dat$trigger_leg_ankle_dorsiflexion_integrated_ONE[indices_slow] * -1;
-
 
 step_time <- dat$step_time_ONE
 step_length <- dat$step_length_ONE
@@ -35,10 +34,16 @@ trigger_leg_knee_rotation_step_end_deg <- dat$trigger_leg_knee_rotation_step_end
 swing_leg_hip_adduction_step_end_deg <- dat$swing_leg_hip_adduction_step_end_ONE;
 swing_leg_hip_rotation_step_end_deg <- dat$swing_leg_hip_rotation_step_end_ONE;
 
+cop_from_com_x_integrated_singlestance_inverted_mm <- dat$cop_from_com_x_integrated_singlestance_sym_ONE * 1000;
+trigger_leg_ankle_eversion_integrated_singlestance_deg <- dat$trigger_leg_ankle_eversion_integrated_singlestance_ONE;
+trigger_leg_peroneus_integrated_singlestance_perc <- dat$trigger_leg_peroneus_integrated_singlestance_ONE;
+trigger_leg_tibiant_integrated_singlestance_perc <- dat$trigger_leg_tibiant_integrated_singlestance_ONE;
 
 cop_from_com_x_integrated_inverted_mm <- dat$cop_from_com_x_integrated_sym_ONE * 1000;
-trigger_leg_ankle_eversion_integrated_deg <- dat$trigger_leg_ankle_eversion_integrated_singlestance_ONE;
-trigger_leg_peroneus_integrated_singlestance_perc <- dat$trigger_leg_peroneus_integrated_singlestance_ONE;
+trigger_leg_ankle_eversion_integrated_deg <- dat$trigger_leg_ankle_eversion_integrated_ONE;
+trigger_leg_peroneus_integrated_perc <- dat$trigger_leg_peroneus_integrated_ONE;
+trigger_leg_tibiant_integrated_perc <- dat$trigger_leg_tibiant_integrated_ONE;
+
 
 trigger_leg_ankle_dorsiflexion_integrated_deg <- dat$trigger_leg_ankle_dorsiflexion_integrated_doublestance_TWO * -1;
 trigger_leg_gastroc_integrated_singlestance_perc <- dat$trigger_leg_gastroc_integrated_singlestance_ONE;
@@ -46,6 +51,8 @@ trigger_leg_gastroc_integrated_singlestance_perc <- dat$trigger_leg_gastroc_inte
 cadence <- dat$cadence;
 trigger_foot <- dat$trigger_foot;
 subject <- dat$subject;
+
+com_x_long_max <- dat$com_x_max_long * 1000;
 
 com_x_bandend <- dat$com_x_sym_band_end_TWO
 com_x_vel_bandend <- dat$com_x_vel_sym_band_end_TWO
@@ -58,60 +65,92 @@ com_x_vel_atPO <- dat$com_x_vel_sym_pushoff_end_TWO
 con <- file("cadence.log")
 sink(con, append=TRUE)
 
+# CoM x long Max
+fm_com_x_long_max_inverted_mm <- lmer(com_x_long_max ~ trigger_foot+cadence + (1|subject))
+anova_com_x_long_max_inverted_mm <- anova(fm_com_x_long_max_inverted_mm)
+rg_com_x_long_max_inverted_mm <- ref_grid(fm_com_x_long_max_inverted_mm)
+confint_com_x_long_max_inverted_mm <- emmeans(rg_com_x_long_max_inverted_mm, "cadence")
+
 # STEP PLACEMENT
-fm_step_placement_x_inverted_mm <- lmer(step_placement_x_inverted_mm ~ trigger_foot*cadence + (1|subject))
+fm_step_placement_x_inverted_mm <- lmer(step_placement_x_inverted_mm ~ trigger_foot+cadence + (1|subject))
 anova_step_placement_x_inverted_mm <- anova(fm_step_placement_x_inverted_mm)
 rg_step_placement_x_inverted_mm <- ref_grid(fm_step_placement_x_inverted_mm)
 confint_step_placement_x_inverted_mm <- emmeans(rg_step_placement_x_inverted_mm, "cadence")
 
-fm_stimulus_response_x_inverted_mm <- lmer(stimulus_response_x_inverted_mm ~ trigger_foot*cadence + (1|subject))
+fm_stimulus_response_x_inverted_mm <- lmer(stimulus_response_x_inverted_mm ~ trigger_foot+cadence + (1|subject))
 anova_stimulus_response_x_inverted_mm <- anova(fm_stimulus_response_x_inverted_mm)
 rg_stimulus_response_x_inverted_mm <- ref_grid(fm_stimulus_response_x_inverted_mm)
 confint_stimulus_response_x_inverted_mm <- emmeans(rg_stimulus_response_x_inverted_mm, "cadence")
 
-fm_swing_leg_heel_x_mm <- lmer(stimulus_response_x_inverted_mm ~ trigger_foot*cadence + (1|subject))
+fm_swing_leg_heel_x_mm <- lmer(stimulus_response_x_inverted_mm ~ trigger_foot+cadence + (1|subject))
 anova_swing_leg_heel_x_mm <- anova(fm_swing_leg_heel_x_mm)
 rg_swing_leg_heel_x_mm <- ref_grid(fm_swing_leg_heel_x_mm)
 confint_swing_leg_heel_x_mm <- emmeans(rg_swing_leg_heel_x_mm, "cadence")
 
-fm_trigger_leg_knee_rotation_step_end_deg <- lmer(trigger_leg_knee_rotation_step_end_deg ~ trigger_foot*cadence + (1|subject))
+fm_trigger_leg_knee_rotation_step_end_deg <- lmer(trigger_leg_knee_rotation_step_end_deg ~ trigger_foot+cadence + (1|subject))
 anova_trigger_leg_knee_rotation_step_end_deg <- anova(fm_trigger_leg_knee_rotation_step_end_deg)
 rg_trigger_leg_knee_rotation_step_end_deg <- ref_grid(fm_trigger_leg_knee_rotation_step_end_deg)
 confint_trigger_leg_knee_rotation_step_end_deg <- emmeans(rg_trigger_leg_knee_rotation_step_end_deg, "cadence")
 
-fm_swing_leg_hip_rotation_step_end_deg <- lmer(swing_leg_hip_rotation_step_end_deg ~ trigger_foot*cadence + (1|subject))
+fm_swing_leg_hip_rotation_step_end_deg <- lmer(swing_leg_hip_rotation_step_end_deg ~ trigger_foot+cadence + (1|subject))
 anova_swing_leg_hip_rotation_step_end_deg <- anova(fm_swing_leg_hip_rotation_step_end_deg)
 rg_swing_leg_hip_rotation_step_end_deg <- ref_grid(fm_swing_leg_hip_rotation_step_end_deg)
 confint_swing_leg_hip_rotation_step_end_deg <- emmeans(rg_swing_leg_hip_rotation_step_end_deg, "cadence")
 
-fm_swing_leg_hip_adduction_step_end_deg <- lmer(swing_leg_hip_adduction_step_end_deg ~ trigger_foot*cadence + (1|subject))
+fm_swing_leg_hip_adduction_step_end_deg <- lmer(swing_leg_hip_adduction_step_end_deg ~ trigger_foot+cadence + (1|subject))
 anova_swing_leg_hip_adduction_step_end_deg <- anova(fm_swing_leg_hip_adduction_step_end_deg)
 rg_swing_leg_hip_adduction_step_end_deg <- ref_grid(fm_swing_leg_hip_adduction_step_end_deg)
 confint_swing_leg_hip_adduction_step_end_deg <- emmeans(rg_swing_leg_hip_adduction_step_end_deg, "cadence")
 
 # LAT ANKLE
-fm_cop_from_com_x_integrated_inverted_mm <- lmer(cop_from_com_x_integrated_inverted_mm  ~ trigger_foot*cadence + (1|subject))
-anova_cop_from_com_x_integrated_inverted_mm <- anova(fm_cop_from_com_x_integrated_inverted_mm)
-rg_cop_from_com_x_integrated_inverted_mm <- ref_grid(fm_cop_from_com_x_integrated_inverted_mm)
-confint_cop_from_com_x_integrated_inverted_mm <- emmeans(rg_cop_from_com_x_integrated_inverted_mm, "cadence")
+fm_cop_from_com_x_integrated_singlestance_inverted_mm <- lmer(cop_from_com_x_integrated_singlestance_inverted_mm  ~ trigger_foot*cadence + (1|subject))
+anova_cop_from_com_x_integrated_singlestance_inverted_mm <- anova(fm_cop_from_com_x_integrated_singlestance_inverted_mm)
+rg_cop_from_com_x_integrated_singlestance_inverted_mm <- ref_grid(fm_cop_from_com_x_integrated_singlestance_inverted_mm)
+confint_cop_from_com_x_integrated_singlestance_inverted_mm <- emmeans(rg_cop_from_com_x_integrated_singlestance_inverted_mm, "cadence")
 
-fm_trigger_leg_ankle_eversion_integrated_deg <- lmer(trigger_leg_ankle_eversion_integrated_deg ~ trigger_foot*cadence + (1|subject))
-anova_trigger_leg_ankle_eversion_integrated_deg <- anova(fm_trigger_leg_ankle_eversion_integrated_deg)
-rg_trigger_leg_ankle_eversion_integrated_deg <- ref_grid(fm_trigger_leg_ankle_eversion_integrated_deg)
-confint_trigger_leg_ankle_eversion_integrated_deg <- emmeans(rg_trigger_leg_ankle_eversion_integrated_deg, "cadence")
+fm_trigger_leg_ankle_eversion_integrated_singlestance_deg <- lmer(trigger_leg_ankle_eversion_integrated_singlestance_deg ~ trigger_foot*cadence + (1|subject))
+anova_trigger_leg_ankle_eversion_integrated_singlestance_deg <- anova(fm_trigger_leg_ankle_eversion_integrated_singlestance_deg)
+rg_trigger_leg_ankle_eversion_integrated_singlestance_deg <- ref_grid(fm_trigger_leg_ankle_eversion_integrated_singlestance_deg)
+confint_trigger_leg_ankle_eversion_integrated_singlestance_deg <- emmeans(rg_trigger_leg_ankle_eversion_integrated_singlestance_deg, "cadence")
 
 fm_trigger_leg_peroneus_integrated_singlestance_perc <- lmer(trigger_leg_peroneus_integrated_singlestance_perc ~ trigger_foot*cadence + (1|subject))
 anova_trigger_leg_peroneus_integrated_singlestance_perc <- anova(fm_trigger_leg_peroneus_integrated_singlestance_perc)
 rg_trigger_leg_peroneus_integrated_singlestance_perc <- ref_grid(fm_trigger_leg_peroneus_integrated_singlestance_perc)
 confint_trigger_leg_peroneus_integrated_singlestance_perc <- emmeans(rg_trigger_leg_peroneus_integrated_singlestance_perc, "cadence")
 
+fm_trigger_leg_tibiant_integrated_singlestance_perc <- lmer(trigger_leg_tibiant_integrated_singlestance_perc ~ trigger_foot*cadence + (1|subject))
+anova_trigger_leg_tibiant_integrated_singlestance_perc <- anova(fm_trigger_leg_tibiant_integrated_singlestance_perc)
+rg_trigger_leg_tibiant_integrated_singlestance_perc <- ref_grid(fm_trigger_leg_tibiant_integrated_singlestance_perc)
+confint_trigger_leg_tibiant_integrated_singlestance_perc <- emmeans(rg_trigger_leg_tibiant_integrated_singlestance_perc, "cadence")
+
+
+fm_cop_from_com_x_integrated_inverted_mm <- lmer(cop_from_com_x_integrated_inverted_mm  ~ trigger_foot+cadence + (1|subject))
+anova_cop_from_com_x_integrated_inverted_mm <- anova(fm_cop_from_com_x_integrated_inverted_mm)
+rg_cop_from_com_x_integrated_inverted_mm <- ref_grid(fm_cop_from_com_x_integrated_inverted_mm)
+confint_cop_from_com_x_integrated_inverted_mm <- emmeans(rg_cop_from_com_x_integrated_inverted_mm, "cadence")
+
+fm_trigger_leg_ankle_eversion_integrated_deg <- lmer(trigger_leg_ankle_eversion_integrated_deg ~ trigger_foot+cadence + (1|subject))
+anova_trigger_leg_ankle_eversion_integrated_deg <- anova(fm_trigger_leg_ankle_eversion_integrated_deg)
+rg_trigger_leg_ankle_eversion_integrated_deg <- ref_grid(fm_trigger_leg_ankle_eversion_integrated_deg)
+confint_trigger_leg_ankle_eversion_integrated_deg <- emmeans(rg_trigger_leg_ankle_eversion_integrated_deg, "cadence")
+
+fm_trigger_leg_peroneus_integrated_perc <- lmer(trigger_leg_peroneus_integrated_perc ~ trigger_foot+cadence + (1|subject))
+anova_trigger_leg_peroneus_integrated_perc <- anova(fm_trigger_leg_peroneus_integrated_perc)
+rg_trigger_leg_peroneus_integrated_perc <- ref_grid(fm_trigger_leg_peroneus_integrated_perc)
+confint_trigger_leg_peroneus_integrated_perc <- emmeans(rg_trigger_leg_peroneus_integrated_perc, "cadence")
+
+fm_trigger_leg_tibiant_integrated_perc <- lmer(trigger_leg_tibiant_integrated_perc ~ trigger_foot+cadence + (1|subject))
+anova_trigger_leg_tibiant_integrated_perc <- anova(fm_trigger_leg_tibiant_integrated_perc)
+rg_trigger_leg_tibiant_integrated_perc <- ref_grid(fm_trigger_leg_tibiant_integrated_perc)
+confint_trigger_leg_tibiant_integrated_perc <- emmeans(rg_trigger_leg_tibiant_integrated_perc, "cadence")
+
 # PUSH OFF
-fm_trigger_leg_ankle_dorsiflexion_integrated_deg <- lmer(trigger_leg_ankle_dorsiflexion_integrated_deg ~ trigger_foot*cadence + (1|subject))
+fm_trigger_leg_ankle_dorsiflexion_integrated_deg <- lmer(trigger_leg_ankle_dorsiflexion_integrated_deg ~ trigger_foot+cadence + (1|subject))
 anova_trigger_leg_ankle_dorsiflexion_integrated_deg <- anova(fm_trigger_leg_ankle_dorsiflexion_integrated_deg)
 rg_trigger_leg_ankle_dorsiflexion_integrated_deg <- ref_grid(fm_trigger_leg_ankle_dorsiflexion_integrated_deg)
 confint_trigger_leg_ankle_dorsiflexion_integrated_deg <- emmeans(rg_trigger_leg_ankle_dorsiflexion_integrated_deg, "cadence")
 
-fm_trigger_leg_gastroc_integrated_singlestance_perc <- lmer(trigger_leg_gastroc_integrated_singlestance_perc  ~ trigger_foot*cadence + (1|subject))
+fm_trigger_leg_gastroc_integrated_singlestance_perc <- lmer(trigger_leg_gastroc_integrated_singlestance_perc  ~ trigger_foot+cadence + (1|subject))
 anova_trigger_leg_gastroc_integrated_singlestance_perc <- anova(fm_trigger_leg_gastroc_integrated_singlestance_perc)
 rg_trigger_leg_gastroc_integrated_singlestance_perc <- ref_grid(fm_trigger_leg_gastroc_integrated_singlestance_perc)
 confint_trigger_leg_gastroc_integrated_singlestance_perc <- emmeans(rg_trigger_leg_gastroc_integrated_singlestance_perc, "cadence")
