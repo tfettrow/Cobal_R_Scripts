@@ -68,11 +68,11 @@ rg_contra_leg_hip_adduction_model <- ref_grid(contra_leg_hip_adduction_model)
 confint_contra_leg_hip_adduction_model <- emmeans(rg_contra_leg_hip_adduction_model, "zone_direction")
 
 
-# trigger leg ankle plantar flexion**** (not in results. only dorsiflecion)
-#_model <- lmer(VN** ~ trigger_foot + zone_direction + (1|subject), data=results, REML = FALSE)
-#anova__model <- anova(_model)
-#rg__model <- ref_grid(_model)
-#confint__model <- emmeans(rg__model, "zone_direction")
+# trigger leg ankle dorsi flexion  (negative values of plantar flexion) 
+trigger_leg_ankle_dorsiflexion_model <- lmer(trigger_leg_ankle_dorsiflexion_integrated_doublestance_ONE ~ trigger_foot + zone_direction + (1|subject), data=results, REML = FALSE)
+anova_trigger_leg_ankle_dorsiflexion_model <- anova(trigger_leg_ankle_dorsiflexion_model)
+rg_trigger_leg_ankle_dorsiflexion_model <- ref_grid(trigger_leg_ankle_dorsiflexion_model)
+confint_trigger_leg_ankle_dorsiflexion_model <- emmeans(rg_trigger_leg_ankle_dorsiflexion_model, "zone_direction")
 
 # trigger leg gastroc med emg
 trigger_leg_gastroc_med_emg_model <- lmer(trigger_leg_gastroc_med_integrated_singlestance_ONE ~ trigger_foot + zone_direction + (1|subject), data=results, REML = FALSE)
