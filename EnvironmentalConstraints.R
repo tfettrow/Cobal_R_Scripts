@@ -54,14 +54,14 @@ anova_trigger_leg_knee_rotation_model <- anova(trigger_leg_knee_rotation_model)
 rg_trigger_leg_knee_rotation_model <- ref_grid(trigger_leg_knee_rotation_model)
 confint_trigger_leg_knee_rotation_model <- emmeans(rg_trigger_leg_knee_rotation_model, "zone_direction")
 
-# contra leg hip rotation  (**need to confirm we are looking at contra leg**)
-contra_leg_hip_rotation_model <- lmer(contra_leg_hip_rotation_step_end_ONE ~ trigger_foot + zone_direction + (1|subject), data=results, REML = FALSE)
+# contra leg hip rotation  
+contra_leg_hip_rotation_modcel <- lmer(contra_leg_hip_rotation_step_end_ONE ~ trigger_foot + zone_direction + (1|subject), data=results, REML = FALSE)
 anova_contra_leg_hip_rotation_model <- anova(contra_leg_hip_rotation_model)
 rg_contra_leg_hip_rotation_model <- ref_grid(contra_leg_hip_rotation_model)
 confint_contra_leg_hip_rotation_model <- emmeans(rg_contra_leg_hip_rotation_model, "zone_direction")
 
 
-# contra leg hip adduction (**need to confirm we are looking at contra leg**)
+# contra leg hip adduction 
 contra_leg_hip_adduction_model <- lmer(contra_leg_hip_adduction_step_end_ONE ~ trigger_foot + zone_direction + (1|subject), data=results, REML = FALSE)
 anova_contra_leg_hip_adduction_model <- anova(contra_leg_hip_adduction_model)
 rg_contra_leg_hip_adduction_model <- ref_grid(contra_leg_hip_adduction_model)
@@ -94,7 +94,7 @@ confint_trigger_leg_gastroc_med_emg_model <- emmeans(rg_trigger_leg_gastroc_med_
 
 # Step Placement
 
-fm_step_placement_x_inverted_mm <- lmer(step_placement_x_directionSym_ONE ~ zone_direction_bin + direction_bin + zone_direction_bin*direction_bin + (1|subject), data=dat, REML = FALSE)
+fm_step_placement_x_inverted_mm <- lmer(step_placement_x_directionSym_ONE ~ zone_direction_bin + direction_bin + zone_direction_bin*direction_bin + (1|subject), data=, REML = FALSE)
 
 fixef(fm_step_placement_x_inverted_mm)["zone_direction_bin"] <- 0.005
 
@@ -108,7 +108,7 @@ power_curve_step <- powerCurve(fm_step_extended, along="subject")
 
 
 # LAT ANKLE
-fm_cop_from_com_x_integrated_inverted_mm <- lmer(cop_from_com_x_integrated_directionSym_ONE  ~ zone_direction_bin + direction_bin + zone_direction_bin*direction_bin  + (1|subject), data=dat, REML = FALSE)
+fm_cop_from_com_x_integrated_inverted_mm <- lmer(cop_from_com_x_integrated_directionSym_ONE  ~ zone_direction_bin + direction_bin + zone_direction_bin*direction_bin  + (1|subject), data=, REML = FALSE)
 
 fixef(fm_cop_from_com_x_integrated_inverted_mm)["zone_direction_bin"] <- 0.001
 
